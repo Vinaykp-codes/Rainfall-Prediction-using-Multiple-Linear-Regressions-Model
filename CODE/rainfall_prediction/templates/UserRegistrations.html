@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        background: linear-gradient(to bottom, #1a2a6c, #b21f1f, #fccb00);
+        height: 100vh;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        position: relative;
+    }
+
+    .card {
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.9);
+        position: relative;
+        z-index: 1;
+        width: 550px;
+    }
+
+    legend {
+        color: #3f51b5;
+        font-size: 1.8em;
+        margin-bottom: 15px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        color: #555;
+        font-weight: 600;
+        margin-bottom: 3px;
+        display: block;
+        font-size: 0.9em;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease;
+        font-size: 0.9em;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus {
+        border-color: #3f51b5;
+        outline: none;
+        box-shadow: 0 0 6px rgba(63, 81, 181, 0.2);
+    }
+
+    .button-1, .button-2 {
+        background-color: #4caf50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin: 3px 1px;
+        cursor: pointer;
+        border-radius: 18px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .button-2 {
+        background-color: #f44336;
+    }
+
+    .button-1:hover, .button-2:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .messages {
+        list-style: none;
+        padding: 8px;
+        margin-top: 15px;
+        border-radius: 6px;
+        background-color: #fff3cd;
+        border: 1px solid #ffeeba;
+        color: #85640a;
+        font-size: 0.9em;
+    }
+
+    .messages li {
+        padding: 6px;
+        border-bottom: 1px solid #ffeeba;
+    }
+
+    .messages li:last-child {
+        border-bottom: none;
+    }
+
+    .errorlist {
+        color: #d32f2f;
+        list-style: none;
+        padding: 0;
+        margin-bottom: 8px;
+        font-size: 0.9em;
+    }
+
+    .particle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.7);
+        pointer-events: none;
+    }
+
+    .wave {
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 45%;
+        background: rgba(255, 255, 255, 0.1);
+        pointer-events: none;
+        animation: waveAnimation 15s linear infinite;
+    }
+
+    @keyframes waveAnimation {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+</style>
+
+<div class="container">
+    <div class="card" id="cardContainer">
+        <form action="{% url 'UserRegisterActions' %}" method="POST">
+            {% csrf_token %}
+            <legend class="text-center">Sign Up</legend>
+            {{ form.as_p }}
+            <p>
+                <input type="submit" class="button-1" value="Register">
+                <input type="reset" class="button-2" value="Reset">
+            </p>
+
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+<script>
+    const container = document.querySelector('.container');
+    const cardContainer = document.getElementById('cardContainer');
+
+    function createParticle() {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        container.appendChild(particle);
+
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight;
+        particle.style.left = `${x}px`;
+        particle.style.top = `${y}px`;
+
+        const size = Math.random() * 6;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+
+        const speedX = (Math.random() - 0.5) * 0.4;
+        const speedY = (Math.random() - 0.5) * 0.4;
+
+        function moveParticle() {
+            let newX = parseFloat(particle.style.left) + speedX;
+            let newY = parseFloat(particle.style.top) + speedY;
+
+            if (newX < 0 || newX > window.innerWidth) {
+                speedX *= -1;
+            }
+            if (newY < 0 || newY > window.innerHeight) {
+                speedY *= -1;
+            }
+
+            particle.style.left = `${newX}px`;
+            particle.style.top = `${newY}px`;
+
+            requestAnimationFrame(moveParticle);
+        }
+
+        moveParticle();
+    }
+
+    for (let i = 0; i < 40; i++) {
+        createParticle();
+    }
+
+    const wave = document.createElement('div');
+    wave.classList.add('wave');
+    container.appendChild(wave);
+
+    container.addEventListener('mousemove', (e) => {
+        const particles = document.querySelectorAll('.particle');
+        particles.forEach(particle => {
+            const particleX = parseFloat(particle.style.left);
+            const particleY = parseFloat(particle.style.top);
+            const distanceX = e.clientX - particleX;
+            const distanceY = e.clientY - particleY;
+            const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+            if (distance < 80) {
+                const angle = Math.atan2(distanceY, distanceX);
+                const force = (1 - distance / 80) * 1.5;
+                particle.style.left = `${particleX - Math.cos(angle) * force}px`;
+                particle.style.top =`${particleY - Math.sin(angle) * force}px`;
+            }
+        });
+    });
+
+    const buttons = document.querySelectorAll('.button-1, .button-2');
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+            button.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                button.style.transform = 'scale(1)';
+            }, 150);
+        });
+    });
+
+    window.addEventListener('scroll', function() {
+        const scrollY = window.scrollY;
+        cardContainer.style.transform = `translateY(${scrollY * 0.08}px)`;
+    });
+</script>
+{% endblock %}

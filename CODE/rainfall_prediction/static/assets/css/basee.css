@@ -1,0 +1,116 @@
+/* 3D Perspective Container */
+body {
+    background-image: url("{% static 'images/rain_path.jpg' %}");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.perspective-container {
+    perspective: 1000px;
+    height: 100vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.perspective-content {
+    transform-style: preserve-3d;
+    transform: rotateX(10deg);
+    padding: 20px;
+    transition: transform 0.5s ease;
+}
+
+/* Button Animations */
+.button-1 {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.button-1:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Navigation Animations */
+nav {
+    position: relative;
+    z-index: 10;
+    transition: transform 0.5s ease;
+}
+
+nav ul li a {
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #3498db;
+}
+
+/* Scroll Up Button Animation */
+.scroll-up {
+    transition: transform 0.3s ease;
+}
+
+.scroll-up:hover {
+    transform: translateY(-5px);
+}
+
+/* Styles for the content inside the wrapper */
+.wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+}
+.cloud {
+    position: absolute;
+    width: 400px;
+    height: 100px;
+    animation: cloudMove 200s linear infinite alternate;
+}
+
+.cloud svg {
+    width: 130%;
+    height: 140%;
+}
+
+.cloud svg path {
+    fill: rgb(53, 195, 205); /* Or your preferred blue color */
+}
+
+@keyframes cloudMove {
+    0% {
+        left: -200px;
+    }
+    100% {
+        left: calc(100% + 200px);
+    }
+}
+
+
+@keyframes cloudMove {
+    0% {
+        left: -200px;
+    }
+    100% {
+        left: calc(100% + 200px);
+    }
+}
+
+.raindrop {
+    position: absolute;
+    width: 2px;
+    height: 8px;
+    background: linear-gradient(to bottom, #87ceeb, #4682b4);
+    border-radius: 1px;
+    z-index: 5;
+    pointer-events: none;
+    animation-timing-function: linear;
+}
+
+@keyframes rainFall {
+    0% { transform: translateY(0) translateX(0); }
+    100% { transform: translateY(100vh) translateX(var(--wind-drift)); }
+}

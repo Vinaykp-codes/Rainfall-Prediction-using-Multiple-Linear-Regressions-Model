@@ -1,0 +1,268 @@
+{% extends 'users/user_base.html' %}
+{% block content %}
+    <style>
+
+        .center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .form-element #rangeValue {
+            margin-bottom: 20px;
+            font-size: 50px;
+            font-family: "Raleway";
+            text-align: center;
+            color: #ddd;
+        }
+
+        .form-element input[type="range"] {
+            -webkit-appearance: none;
+            width: 300px;
+            height: 40px;
+            border-radius: 15px;
+            background: #aaa;
+            outline: none;
+            overflow: hidden;
+        }
+
+        .form-element input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 40px;
+            height: 40px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            box-shadow: -350px 0px 0px 340px #f5f5f5;
+            cursor: pointer;
+        }
+
+        /* Start */
+
+        form, label {
+            text-align: left;
+        }
+
+        input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 25px;
+            height: 25px;
+            background: red !important;
+            cursor: pointer;
+
+        }
+    </style>
+
+    <div class="row d-flex justify-content-center   mt-5">
+
+        <h1 class="text-center"> {{ result }}</h1>
+        <!--Grid column-->
+        <div class="col-md-10 text-center mt-5 mb-5">
+            <div class="card">
+                <!---start --->
+                <h2 class="text-center mt-3 mb-5">Machine Learning</h2>
+                <form action="{% url 'ml' %}" method="POST">
+
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="id_temp_high_f">Temp High (F)
+                                <span id="label_temp_high_f" class="text-info mx-5">50</span>
+                            </label>
+                            <input type="range"
+                                   value="50"
+                                   min="32"
+                                   max="107"
+                                   oninput="label_temp_high_f.innerText = this.value"
+                                   id="id_temp_high_f"
+                                   class="form-range card p-2 m-2"
+                                   name="temp_high"
+                                   placeholder="Temp High (F)"
+                                   required>
+                        </div>
+                        <div class="col">
+                            <label for="id_temp_avg_f">Temp Avg (F)</label>
+                            <input type="number"
+                                   id="id_temp_avg_f"
+                                   class="form-control"
+                                   name="temp_avg"
+                                   placeholder="Temp Avg (F)"
+                                   required>
+                        </div>
+
+                        <div class="col">
+                            <label for="id_temp_low_f">Temp Low (F)</label>
+                            <input type="number"
+                                   id="id_temp_low_f"
+                                   class="form-control"
+                                   name="temp_low"
+                                   placeholder="Temp Low (F)"
+                                   required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="id_dew_point_high_f">Dew Point High (F)</label>
+                            <input type="number"
+                                   id="id_dew_point_high_f"
+                                   class="form-control"
+                                   name="dew_point_high"
+                                   placeholder="Dew Point High (F)"
+                                   required>
+                        </div>
+                        <div class="col">
+                            <label for="id_dew_point_avg_f">Dew Point Avg (F)</label>
+                            <input type="number"
+                                   id="id_dew_point_avg_f"
+                                   class="form-control"
+                                   name="dew_point_avg"
+                                   placeholder="Dew Point Avg (F)"
+                                   required>
+                        </div>
+                        <div class="col">
+                            <label for="id_dew_point_low_f">Dew Point Low (F)</label>
+                            <input type="number"
+                                   id="id_dew_point_low_f"
+                                   class="form-control"
+                                   name="dew_point_low"
+                                   placeholder="Dew Point Low (F)"
+                                   required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="id_humidity_high_percent">Humidity High Percent</label>
+                            <input type="number"
+                                   id="id_humidity_high_percent"
+                                   class="form-control"
+                                   name="humidity_high"
+                                   placeholder="Humidity High Percent"
+                                   required>
+                        </div>
+                        <div class="col">
+                            <label for="id_humidity_avg_percent">Humidity Avg Percent</label>
+                            <input type="number"
+                                   id="id_humidity_avg_percent"
+                                   class="form-control"
+                                   name="humidity_avg"
+                                   placeholder="Humidity Avg Percent"
+                                   required>
+                        </div>
+                        <div class="col">
+                            <label for="id_humidity_low_percent">Humidity Low Percent</label>
+                            <input type="number"
+                                   id="id_humidity_low_percent"
+                                   class="form-control"
+                                   name="humidity_low"
+                                   placeholder="Humidity Low Percent"
+                                   required>
+                        </div>
+
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="id_sea_level_pressure_avg_inches">Sea Level Pressure Avg Inches</label>
+                            <input type="number"
+                                   id="id_sea_level_pressure_avg_inches"
+                                   class="form-control"
+                                   name="sea_level_pressure_avg_inches"
+                                   placeholder="Sea Level Pressure Avg Inches"
+                                   required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="id_visibility_high_miles">Visibility High Miles</label>
+                            <input type="number"
+                                   id="id_visibility_high_miles"
+                                   class="form-control"
+                                   name="visibility_high"
+                                   placeholder="Visibility High Miles"
+                                   required>
+                        </div>
+
+
+                        <div class="col">
+                            <label for="id_visibility_avg_miles">Visibility Avg Miles</label>
+                            <input type="number"
+                                   id="id_visibility_avg_miles"
+                                   class="form-control"
+                                   name="visibility_avg"
+                                   placeholder="Visibility Avg Miles"
+                                   required>
+                        </div>
+
+
+                        <div class="col">
+                            <label for="id_visibility_low_miles">Visibility Low Miles</label>
+                            <input type="number"
+                                   id="id_visibility_low_miles"
+                                   class="form-control"
+                                   name="visibility_low"
+                                   placeholder="Visibility Low Miles"
+                                   required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="id_wind_high_mph">Wind High MPH</label>
+                            <input type="number"
+                                   id="id_wind_high_mph"
+                                   class="form-control"
+                                   name="wind_high"
+                                   placeholder="Wind High MPH"
+                                   required>
+                        </div>
+
+
+                        <div class="col">
+                            <label for="id_wind_avg_mph">Wind Avg MPH</label>
+                            <input type="number"
+                                   id="id_wind_avg_mph"
+                                   class="form-control"
+                                   name="wind_avg"
+                                   placeholder="Wind Avg MPH"
+                                   required>
+                        </div>
+
+
+                        <div class="col">
+                            <label for="id_wind_gust_mph">Wind Gust MPH</label>
+                            <input type="number"
+                                   id="id_wind_gust_mph"
+                                   class="form-control"
+                                   name="wind_gust"
+                                   placeholder="Wind Gust MPH"
+                                   required>
+                        </div>
+
+
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <input type="submit" class="form-control  btn-outline-primary" value="Predict">
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <!--Grid column-->
+    </div>
+
+
+{% endblock %}
+<div class="container">
+    <div class="center">
+        <div class="form-element">
+            <div id="rangeValue">50</div>
+            <input type="range" min="0" max="100" value="50" oninput="rangeValue.innerText = this.value">
+        </div>
+    </div>
+</div>

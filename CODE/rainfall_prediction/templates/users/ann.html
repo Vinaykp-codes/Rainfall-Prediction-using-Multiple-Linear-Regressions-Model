@@ -1,0 +1,32 @@
+{% extends 'users/user_base.html' %}
+{% block content %}
+    {% load static %}
+
+    <div class="container mt-5 mb-5" style="width: 40%">
+        <div class="col">
+            <figure class="border pt-3">
+                <figcaption class="text-center h5">Fig.1 - Predicted and Measured.</figcaption>
+                <img src="{% static 'assets/images/ann/plt1.png' %}" alt="Fig.1" style="width: 100%">
+            </figure>
+        </div>
+        <div class="col border">
+            <table class="table table-striped">
+                <caption class="caption-top h5 text-center text-dark">Obtained Results</caption>
+                <tr>
+                    <th>LOSS</th>
+                    <td>{{ loss }}</td>
+
+                </tr>
+                <tr>
+                    <th>MAE</th>
+                    <td>{{ mae }}</td>
+                </tr>
+                <tr>
+                    <th>Accuracy</th>
+                    <td>{{ accuracy }}</td>
+
+                </tr>
+            </table>
+        </div>
+    </div>
+{% endblock %}

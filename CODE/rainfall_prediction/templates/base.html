@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}"/>
+    <link rel="stylesheet" href="{% static 'assets/css/simple-lightbox.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'assets/css/button.css' %}"/>
+    <link rel="stylesheet" href="{% static 'assets/css/basee.css' %}"/>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/icons/apple-touch-icon.png' %}"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/icons/favicon-32x32.png' %}"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/icons/favicon-16x16.png' %}"/>
+
+    <title>🌧 </title>
+</head>
+<body>
+    <div class="perspective-container">
+        <div class="perspective-content">
+            <nav>
+                <a href="/" class="logo">
+                    <h1>
+                        <span class="jab"> 🌧</span>
+                        <span class="fist"></span>
+                        <span class="tv">Prediction</span>
+                    </h1>
+                </a>
+
+                <div class="theme-switch">
+                    <input type="checkbox" class="checkbox" id="checkbox"/>
+                    <label for="checkbox" class="label">
+                        <ion-icon name="partly-sunny-outline" class="sun"></ion-icon>
+                        <ion-icon name="moon-outline" class="moon"></ion-icon>
+                        <div class="switcher"></div>
+                    </label>
+                </div>
+
+                <ul>
+                    <li class="nav-item">
+                        <a href="{% url 'weather' %}" class="nav-link">GET LIVE WEATHER DEATILS</a>
+                        <a href="{% url 'AdminLogin' %}" class="nav-link {% if request.path == '/AdminLogin/' %} active {% endif %} " id="nav-link">Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'UserLogin' %}" class="nav-link {% if request.path == '/UserLogin/' %} active {% endif %}" id="nav-link">Users</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{% url 'UserRegister' %}" class="nav-link {% if request.path == '/UserRegister/' %} active {% endif %} button-1 " id="nav-link">Register</a>
+                    </li>
+                </ul>
+
+                <div class="hamburger" id="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+            {% block content %}
+
+            {% endblock %}
+
+            <footer>&copy;2022. All Rights Reserverd</footer>
+
+            <i class="scroll-up" id="scroll-up">
+                <img src="{% static 'assets/icons/icons8-upward-arrow.png' %}" class="socicon up-arrow" alt="up-arrow"/>
+            </i>
+        </div>
+    </div>
+
+    <script src="{% static 'assets/js/app.js' %}"></script>
+    <script type="module" src="{% static 'ionicons/ionicons.esm.js' %}"></script>
+    <script src="{% static 'assets/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/simple-lightbox.min.js' %}"></script>
+    <script src="{% static 'assets/js/basee.js' %}"></script>
+    <script>
+        var lightbox = new SimpleLightbox(".stars-gallery a");
+    </script>
+</body>
+</html>

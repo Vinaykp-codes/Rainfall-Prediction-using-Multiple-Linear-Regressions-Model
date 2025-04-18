@@ -1,0 +1,23 @@
+{% extends 'users/user_base.html' %}
+{% block content %}
+    <div class="container mt-5 mb-5 d-flex justify-content-center">
+
+        <table class="table table-bordered table-striped mt-5 w-50">
+            <caption class="caption-top h2 mb-3">Multiple Linear Regression </caption>
+
+            <tr>
+                <th>Mean Absolute Error </th>
+                <td>{{  mean_absolute_error }}</td>
+            </tr>
+            <tr>
+                <th>Mean Squared Error</th>
+                <td>{{  mean_squared_error  }}</td>
+            </tr>
+            <tr>
+                <th>R2 Score </th>
+                <td>{{ r2_score }}</td>
+            </tr>
+        </table>
+
+    </div>
+{% endblock %}

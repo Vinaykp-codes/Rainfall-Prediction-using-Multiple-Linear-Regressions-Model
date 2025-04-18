@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <style>
+        /* Glassmorphism login form styles */
+        .login-container {
+            width: 400px;
+            background-color: rgba(255, 255, 255, 0.13);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+            padding: 50px 35px;
+            margin: 50px auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container h3 {
+            font-family: 'Poppins', sans-serif;
+            color: rgb(81, 13, 137);
+            letter-spacing: 0.5px;
+            font-size: 32px;
+            font-weight: 500;
+            line-height: 42px;
+            text-align: center;
+        }
+
+        .login-container label {
+            font-family: 'Poppins', sans-serif;
+            color: rgb(0, 0, 0);
+            letter-spacing: 0.5px;
+            display: block;
+            margin-top: 30px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .login-container input {
+            font-family: 'Poppins', sans-serif;
+            color: rgb(0, 0, 0);
+            letter-spacing: 0.5px;
+            display: block;
+            height: 50px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.07);
+            border-radius: 8px;
+            padding: 0 10px;
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 300;
+            border: solid 2px;
+            outline: none;
+        }
+
+        .login-container ::placeholder {
+            color: rgba(0, 0, 0, 0.39);
+        }
+
+        .login-container button {
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.5px;
+            margin-top: 50px;
+            width: 100%;
+            background-color: rgb(14, 162, 51);
+            color: rgb(255, 255, 255);
+            padding: 15px 0;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .messages {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10px;
+            color: white;
+        }
+
+        .messages li {
+            margin-bottom: 5px;
+        }
+
+        .login-container .button-2 {
+            margin-top: 10px;
+            width: 100%;
+            background-color: rgb(14, 162, 51);
+            color: white;
+            padding: 15px 0;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Animated Background Gradient */
+        .login-container::before,
+        .login-container::after {
+            content: '';
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: gradientMove 10s linear infinite;
+            opacity: 0.7;
+        }
+
+        .login-container::before {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            top: -100px;
+            left: -100px;
+        }
+
+        .login-container::after {
+            background: linear-gradient(to right, #ff4081, #d500f9);
+            bottom: -100px;
+            right: -50px;
+        }
+
+        @keyframes gradientMove {
+            0% {
+                transform: translate(-50px, -50px);
+            }
+            25% {
+                transform: translate(50px, -50px);
+            }
+            50% {
+                transform: translate(50px, 50px);
+            }
+            75% {
+                transform: translate(-50px, 50px);
+            }
+            100% {
+                transform: translate(-50px, -50px);
+            }
+        }
+
+        /* Background Image */
+        body {
+            position: relative;
+            overflow-x: hidden;
+            background-image: url("{% static 'assets/images/background.jpg.jpg' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        
+
+    </style>
+
+    <div class="login-container">
+        <form action="{% url 'AdminLoginCheck' %}" method="post">
+            <h3>Admin Login</h3>
+            {% csrf_token %}
+            <label for="id_loginid">LoginId</label>
+            <input type="text" placeholder="Login ID" id="id_loginid" name="loginid">
+
+            <label for="id_password">Password</label>
+            <input type="password" placeholder="Password" id="id_password" name="password">
+
+            <button type="submit">Submit</button>
+            <input type="reset" class="button-2" value="Reset">
+
+            {% if messages %}
+                Message:
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </form>
+    </div>
+
+    {% endblock %}

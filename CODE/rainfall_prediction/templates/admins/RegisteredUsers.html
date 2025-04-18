@@ -1,0 +1,40 @@
+{% extends 'admins/admin_base.html' %}
+
+{% block content %}
+    <div class="container mb-5 mt-5">
+    <h5>User List</h5>
+         <table class="table table-hover border">
+            <thead>
+            <tr>
+                <th scope="col">Sno</th>
+                <th scope="col">Name</th>
+                <th scope="col">loginId</th>
+                <th scope="col">Email</th>
+                <th scope="col">Status</th>
+                <th scope="col">Activate</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in data %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.loginid }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.status }}</td>
+                    {% if user.status == 'waiting' %}
+                        <td>
+                            <a class="btn-link" href="/AdminActivaUsers/?uid={{ user.id }}"
+                               style="color:DARKBLUE">Activate</a>
+                        </td>
+                    {% else %}
+                        <td> Activated</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+
+
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

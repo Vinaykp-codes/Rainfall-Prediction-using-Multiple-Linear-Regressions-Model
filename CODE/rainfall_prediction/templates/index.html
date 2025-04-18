@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<!-- Hero section -->
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+
+    <!-- Web page CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}"/>
+
+    <!-- Simple lightbox CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/simple-lightbox.min.css' %}"/>
+
+    <link rel="stylesheet" href="{% static 'assets/css/button.css' %}"/>
+
+
+
+    <!-- Favicons -->
+        <link
+                rel="apple-touch-icon"
+                sizes="180x180"
+                href="{% static 'assets/icons/apple-touch-icon.png' %}"
+        />
+        <link
+                rel="icon"
+                type="image/png"
+                sizes="32x32"
+                href="{% static 'assets/icons/favicon-32x32.png' %}"
+        />
+        <link
+                rel="icon"
+                type="image/png"
+                sizes="16x16"
+                href="{% static 'assets/icons/favicon-16x16.png' %}"
+        />
+
+    <title>🌧 </title>
+</head>
+<section class="hero">
+    <div class="intro-text">
+        <h1>
+            <span class="hear"> Rainfall Prediction using </span> <br/>
+            <span class="connecting"> Multiple linear Regression Model</span>
+        </h1>
+        {#        <p>#}
+        {#            Rainfall Prediction using Multiple Linear Regressions Model <br/>#}
+        {##}
+        {#        </p>#}
+        <a class="button-1 text-white" href="{% url 'learn_more' %}">Learn More</a>
+        <a class="button-2 text-white" href="{% url 'UserRegister' %}">Register</a>
+    </div>
+    <div class="i-frame">
+
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/ruRwEPpEfCg" title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+
+        <div class="stand-1"></div>
+        <div class="stand-2"></div>
+    </div>
+</section>
+
+{% endblock %}

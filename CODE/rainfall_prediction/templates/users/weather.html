@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Weather</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #6190E8, #A7BFE8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            overflow: hidden;
+        }
+
+        .weather-container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;
+            position: relative;
+        }
+
+        h1 {
+            color: #3498db;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .weather-icon {
+            margin-bottom: 20px;
+        }
+
+        .weather-details p {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+
+        .weather-details strong {
+            color: #2980b9;
+        }
+
+        form {
+            margin-top: 30px;
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 70%;
+            margin-right: 10px;
+            font-size: 1em;
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.5s;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        .error {
+            color: #e74c3c;
+            margin-top: 20px;
+        }
+
+        /* Cloud Styles */
+        .cloud {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .cloud svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .cloud path {
+            fill: white;
+            opacity: 0.7;
+        }
+
+        /* Wind Animation Styles */
+        .wind-particle {
+            position: absolute;
+            width: 10px; /* Adjust width as needed */
+            height: 2px; /* Thin line */
+            background: linear-gradient(to right, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0)); /* Gradient for fade effect */
+            border-radius: 5px; /* Slight curve */
+            pointer-events: none;
+            transform: rotate(15deg); /* Initial rotation for curve */
+        }
+
+        .wind-particle::before {
+            content: '';
+            position: absolute;
+            width: 10px; /* Adjust width as needed */
+            height: 2px; /* Thin line */
+            background: linear-gradient(to right, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0)); /* Gradient for fade effect */
+            border-radius: 5px; /* Slight curve */
+            transform: rotate(-15deg);
+            top: 2px;
+        }
+
+        .cloud {
+            animation: moveCloud linear infinite;
+        }
+
+        @keyframes moveCloud {
+            0% {
+                transform: translateX(-200px);
+            }
+            100% {
+                transform: translateX(100vw);
+            }
+        }
+
+        .wind-particle {
+            animation: moveWind linear infinite;
+        }
+
+        @keyframes moveWind {
+            0% {
+                transform: translateX(-10px) rotate(15deg);
+            }
+            100% {
+                transform: translateX(100vw) rotate(15deg);
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="weather-container">
+        <h1>WEATHER DETAILS</h1>
+        {% if data %}
+            <h1>{{ data.city }}</h1>
+        {% endif %}
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% else %}
+            <h1>Weather in {{ city }}</h1>
+            <div class="weather-icon">
+                <img src="{{ icon_url }}" alt="Weather Icon" style="width: 100px; height: 100px;">
+            </div>
+            <div class="weather-details">
+                <p><strong>Temperature:</strong> {{ temperature }}°C</p>
+                <p><strong>Description:</strong> {{ description|capfirst }}</p>
+                <p><strong>Humidity:</strong> {{ humidity }}%</p>
+                <p><strong>Wind Speed:</strong> {{ wind_speed }} m/s</p>
+            </div>
+        {% endif %}
+
+        <form method="get">
+            <input type="text" name="city" id="city" placeholder="Enter City">
+            <button type="submit">Get Weather</button>
+        </form>
+    </div>
+
+    <script>
+        // Cloud Shapes (SVG paths)
+        const cloudShapes = [
+            '<svg viewBox="0 0 100 60"><path d="M92.7,35.1c-2.2-5.9-7.1-10.2-13.3-11.2c-1.2-3.8-4.5-6.6-8.7-6.6c-4.2,0-7.5,2.8-8.7,6.6c-2.4-1.2-5.1-1.9-7.9-1.9c-2.8,0-5.5,0.7-7.9,1.9c-1.2-3.8-4.5-6.6-8.7-6.6c-4.2,0-7.5,2.8-8.7,6.6c-6.2,1-11.1,5.3-13.3,11.2c-2.7,7.2-0.1,15.6,6.3,20.4c0.9,0.7,1.9,1.3,2.9,1.8c0.8,0.4,1.6,0.7,2.5,1C28.2,58.1,34,60,40,60c6,0,11.8-1.9,16.6-5.7c0.9-0.4,1.7-0.8,2.5-1.2c1-0.5,1.9-1.1,2.9-1.8C92.8,50.7,95.4,42.3,92.7,35.1z"/></svg>',
+            '<svg viewBox="0 0 100 60"><path d="M92.7,35.1c-2.2-5.9-7.1-10.2-13.3-11.2c-1.2-3.8-4.5-6.6-8.7-6.6c-4.2,0-7.5,2.8-8.7,6.6c-2.4-1.2-5.1-1.9-7.9-1.9c-2.8,0-5.5,0.7-7.9,1.9c-1.2-3.8-4.5-6.6-8.7-6.6c-4.2,0-7.5,2.8-8.7,6.6c-6.2,1-11.1,5.3-13.3,11.2c-2.7,7.2-0.1,15.6,6.3,20.4c0.9,0.7,1.9,1.3,2.9,1.8c0.8,0.4,1.6,0.7,2.5,1C28.2,58.1,34,60,40,60c6,0,11.8-1.9,16.6-5.7c0.9-0.4,1.7-0.8,2.5-1.2c1-0.5,1.9-1.1,2.9-1.8C92.8,50.7,95.4,42.3,92.7,35.1z"/></svg>',
+            '<svg viewBox="0 0 120 70"><path d="M112.7,40.1c-2.2-5.9-7.1-10.2-13.3-11.2c-1.2-3.8-4.5-6.6-8.7-6.6c-4.2,0-7.5,2.8-8.7,6.6c-2.4-1.2-5.1-1.9-7.9-1.9c-2.8,0-5.5,0.7-7.9,1.9c-1.2-3.8-4.5-6.6-8.7-6.6c-4.2,0-7.5,2.8-8.7,6.6c-6.2,1-11.1,5.3-13.3,11.2c-2.7,7.2-0.1,15.6,6.3,20.4c0.9,0.7,1.9,1.3,2.9,1.8c0.8,0.4,1.6,0.7,2.5,1C28.2,68.1,34,70,40,70c6,0,11.8-1.9,16.6-5.7c0.9-0.4,1.7-0.8,2.5-1.2c1-0.5,1.9-1.1,2.9-1.8C112.8,50.7,115.4,42.3,112.7,40.1z"/></svg>'
+        ];
+
+        function createCloud() {
+            const cloud = document.createElement('div');
+            cloud.classList.add('cloud');
+            cloud.innerHTML = cloudShapes[Math.floor(Math.random() * cloudShapes.length)];
+            cloud.style.width = `${Math.random() * 100 + 100}px`;
+            cloud.style.height = `${cloud.style.width * 0.6}px`;
+            cloud.style.top = `${Math.random() * 100}vh`;
+            cloud.style.left = `${Math.random() * 100}vw`;
+            cloud.style.animationDuration = `${Math.random() * 10 + 10}s`;
+            cloud.style.animationDelay = `${Math.random() * 5}s`;
+            document.body.appendChild(cloud);
+
+            cloud.addEventListener('animationiteration', () => {
+                cloud.style.top = `${Math.random() * 100}vh`;
+                cloud.style.left = '-200px';
+            });
+        }
+
+        function createWindParticle() {
+            const particle = document.createElement('div');
+            particle.classList.add('wind-particle');
+            particle.style.top = `${Math.random() * 100}vh`;
+            particle.style.left = '-10px';
+            particle.style.animationDuration = `${Math.random() * 5 + 3}s`;
+            particle.style.animationDelay = `${Math.random() * 2}s`;
+            document.body.appendChild(particle);
+
+            particle.addEventListener('animationiteration', () => {
+                particle.style.top = `${Math.random() * 100}vh`;
+                particle.style.left = '-10px';
+            });
+        }
+
+        for (let i = 0; i < 5; i++) {
+            createCloud();
+        }
+
+        for (let i = 0; i < 20; i++) {
+            createWindParticle();
+        }
+    </script>
+</body>
+</html>
